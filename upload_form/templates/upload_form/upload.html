@@ -1,0 +1,33 @@
+{% extends "upload_form/base.html" %}
+{% block content %}
+
+<div class="menu">
+  <form enctype="multipart/form-data" method="post" action="/save/">
+  	{% csrf_token %}
+  	{{ form.filename }}  
+        <label for="{{ uploadfile.name }}">Uploadfile</label>
+        {{ form.uploadfile }}
+        <label for="{{ description.auto_id }}">Description</label>
+        {{ form.description }}
+        {{ form.size }}
+        <div>{{ alert }}</div>
+  	<input id="file" class='btn' type="submit" value="upload"/>
+  </form>
+
+<a href="/home"><i style="position:relative; right:10px;" class="fas fa-arrow-circle-left"></i>back to home</a>
+</div>
+<script>
+
+
+var object = document.getElementById("id_uploadfile")
+object.addEventListener("change",function(event){
+   filename= event.target.files[0].name;
+   console.log(filename);
+   filesize = event.target.files[0].size;
+   console.log(filesize);
+   $('#id_size').val(filesize);
+   $('#id_filename').val(filename);
+});
+
+</script>
+{% endblock %}

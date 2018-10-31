@@ -1,0 +1,181 @@
+{% extends "upload_form/base.html" %}
+{% block content %}
+{% load static %}
+<div class="menu">
+
+<table class="table table-hover" id="download-table">
+<thead>
+<tr>
+<th></th>
+<th>filename</th>
+<th>date</th>
+<th>size</th>
+<th>description</th>
+{% if request.user.is_superuser %}
+<th>user</th>
+{% endif %}
+</tr>
+</thead>
+<tbody>
+{% for value in all_data %}
+<tr class="listval">
+<td></td>
+<td>{{ value.filename }}</td>
+<td>{{ value.timestamp }}</td>
+<td>{{ value.size }}</td>
+<td>{{ value.description }}</td>
+{% if request.user.is_superuser %}
+<td>{{ value.user }}</td>
+{% endif %}
+</tr>
+{% endfor %}
+</tbody>
+<medium id="alert">{{ alert }}</medium>
+</table>
+
+<form action="{% url 'upload_form:downloadfile' %}" method="POST">
+<div class="form-group" style="display:none;">
+<label style="float:left;" for="filename">Filename</label>
+<input id="filename" class="form-control" type="text" name="filename" aria-describedby="alert" placeholder="Filename" required>
+{% if request.user.is_superuser %}
+<input id="username" type="text" name="name" required>
+{% endif %}
+</div>
+
+<div class="col-xs-offset-2 col-xs-10 text-right">
+<div id="buttons">
+<div class="btn btn-upload btn-outline-primary upload">upload</a></div>
+<input type="submit"  class="btn btn-outline-secondary submit disabled" value="download">
+<div class="btn btn-outline-danger delete disabled" data-toggle="modal" data-target="#deletemodal" onclick="deletelist()" >delete</div>
+</div>
+</div>
+{% csrf_token %}
+</form>
+</div>
+
+<!-- MODAL -->
+<div class="modal fade" id="deletemodal" tabindex="-1" role="dialog" aria-labelledby="modal" aria-hidden="true">
+<div class="modal-dialog" role="document">
+  <div class="modal-content">
+     <div class="modal-body">
+     </div>
+ <form action="{% url 'upload_form:deletefile' %}" method="POST">
+     <input class="delete" type="text" name="deletefile" style="display:none;" required>
+     {% if request.user.is_superuser %}
+     <input class="user" type="text" name="username" style="display:none;" required>
+     {% endif %}
+     <div class="modal-footer" style="display:flex;">
+         <button type="button" class="btn btn-outline-primary" data-dismiss="modal">Close</button>
+         <input type="submit" class="btn btn-outline-danger" value="delete"/>
+     </div>
+     {% csrf_token %}
+     </form>
+    </div>
+  </div>
+</div>
+      
+<script>
+function deletelist(){
+    var list = [];
+    var list2 = [];
+    $('.deleteitem').remove();
+    $('.selected').each(function(){
+     val = $(this).children('td').eq(1).text();
+     val2 = $(this).children('td').eq(5).text();
+     list.push(val);
+     list2.push(val2);
+     deleteItem = "<div class='deleteitem'>"+val+"</div>";
+     $('.modal-body').append(deleteItem);
+     });
+     delval ="";
+     delval2 = "";
+     for(i=0,l=list.length;i<l;i++){
+      delval += list[i];
+      delval2 += list2[i];
+      delval += '?';
+      delval2 += '?';
+     }
+     delval = delval.slice(0,-1);
+     delval2 = delval2.slice(0,-1);
+     $('.delete').val(delval);
+     $('.user').val(delval2);
+};
+
+
+jQuery(function($){
+   $("#download-table").DataTable( {
+        columnDefs: [{
+           orderable:false,
+           className:'select-checkbox',
+           targets: 0,
+           'checkboxes': {
+               'selectRow': true
+            }
+        }],
+        select: {
+           style:'multi+shift',
+           selector:'.listval',
+        },
+        
+        order:[[ 1,'asc' ]]
+        
+   });
+$(document).on('click','#select-all',function(){
+   if(this.checked){
+     $('.listval').addClass("selected");
+   }
+   else{
+     $('.listval').removeClass("selected");
+   }
+});
+
+});
+$(document).ready(function(){
+$(document).on('click','.listval, .select-checkbox',function(){ 
+   var list = [];
+   var list2 = [];
+   $('.selected').each(function(){
+     val = $(this).children('td').eq(1).text();
+     val2 = $(this).children('td').eq(5).text();
+     list.push(val);
+     list2.push(val2);
+});
+   valstr = '';
+   valstr2 = '';
+   for(i=0,l=list.length;i<l;i++){
+      valstr += list[i];
+      valstr2 += list2[i];
+      valstr += '?';
+      valstr2 += '?';
+   }
+   valstr = valstr.slice(0,-1);
+   valstr2 = valstr2.slice(0,-1);
+   console.log(valstr);
+   console.log(valstr2);
+   $('#filename').val(valstr);
+   $('#username').val(valstr2); 
+ 
+   if($('.select-info').length){
+      $('.submit').removeClass("disabled");
+      $('.delete').removeClass("disabled");
+   }
+   else{
+      $('.submit').addClass("disabled"); 
+      $('.delete').addClass("disabled");
+   }
+});
+
+$('.upload').click(function(){
+   window.location.href="/uploads2";
+ });
+});
+
+</script>
+
+
+
+
+
+
+
+{% endblock %}

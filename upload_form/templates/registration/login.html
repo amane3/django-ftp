@@ -1,0 +1,45 @@
+{% extends "upload_form/base.html" %}
+{% block content %}
+<div class="menu">
+<h2>Login</h2>
+{% if user.is_authenticated %}
+<meta http-equiv="refresh" content="0; URL='/home'"/>
+{% endif %}
+<div class="loginform">
+{% if form.errors %}
+<p>Your username and password didn't match. Please try again.</p>
+{% endif %}
+
+<form method="post" action="{% url 'upload_form:django.contrib.auth.views.login' %}">
+{% csrf_token %}
+<div class="form-group">
+  <label style="float:left;" class="col-xs-2">{{ form.username.label }}</label>
+  <div class="form-group">
+    {{ form.username }}
+  </div>
+</div>
+
+<div class="form-group">
+  <label style="float:left;" class="col-xs-2">{{ form.password.label }}</label>
+  <div class="form-group">
+    {{ form.password }}
+
+  </div>
+</div>
+
+
+
+<input class="btn btn-outline-primary" type="submit" value="Login" />
+<input type="hidden" name="next" value="{{ next }}" />
+</form>
+</div>
+</div>
+{% if user.is_authenticated %}
+<script>window.location="/home";</script>
+{% endif %}
+{% endblock %}
+
+
+
+
+

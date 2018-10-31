@@ -1,0 +1,69 @@
+{% extends "upload_form/base.html" %}
+{% block content %}
+<div class="menu">
+<h2>Sign up</h2>
+<form method="post">
+
+<div class="form-group">
+  <label style="float:left;" class="col-xs-2">{{ form.username.label }}</label>
+  <div class="form-group">
+   {{ form.username }}
+  {% if form.username.help_text %}
+     <small style="color:grey; float:left;">{{ form.username.help_text }}</small>
+  {% endif %}
+  {% for error in form.username.errors %}
+    <br><p style="color:red;float:left;font-size:15px;">{{ error }}</p>
+  {% endfor %}
+    </p>
+  </div>
+</div>
+<br>
+
+<div class="form-group">
+  <label style="float:left;" class="col-xs-2">{{ form.email.label }}</label>
+  <div class="form-group">
+   {{ form.email }}
+   {% if form.email.help_text %}
+    <small style="color:grey; float:left;">{{ form.email.help_text }}</small> <br>
+   {% endif %}
+   {% for error in form.email.errors %}
+    <br><p style="color:red;float:left;font-size:15px;">{{ error }}</p>
+    <br>
+   {% endfor %}
+    </p>
+  </div>
+</div>
+
+
+<div class="form-group">
+  <label style="float:left;" class="col-xs-2">{{ form.password1.label }}</label>
+  <div class="form-group">
+   {{ form.password1 }}
+   {% if form.password1.help_text %}
+     <small style="color:grey; float:left;">{{ form.password1.help_text }}</small>
+   {% endif %}
+   {% for error in form.password1.errors %}
+    <p style="color:red;float:left;font-size:15px;">{{ error }}</p>
+   {% endfor %}<br>
+  </div>
+</div>
+
+<div class="form-group">
+  <label style="float:left;" class="col-xs-2" for="id_file">{{ form.password2.label }}</label>
+  <div class="form-group">
+   {{ form.password2 }}
+   {% if form.password2.help_text %}
+     <small style="color:grey;float:left;">{{ form.password2.help_text }}</small>
+   {% endif %}
+   {% for error in form.password2.errors %}
+   <p style="color:red;float:left;font-size:15px;">{{ error }}</p>
+   {% endfor %}
+  </div>
+</div>
+<input type="submit" class="btn"value="Sign up"/>
+{% csrf_token %}
+</form>
+<span>Already have an account?</span>
+<a href="/login">Login</a>
+</div>
+{% endblock %}
