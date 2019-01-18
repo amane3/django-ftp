@@ -14,17 +14,17 @@ python
 Quick start
 -----------
 
-1. Add "upload_form" to your INSTALLED_APPS setting like this::<br>
-
-    INSTALLED_APPS = [
-        'upload_form',    **top of the list**
-        'django.contrib.sites',  **if you don't have**
-        ...
-    ]
-
+1. Add "upload_form" to your INSTALLED_APPS setting
+```
+INSTALLED_APPS = [
+    'upload_form',    #top of the list
+    'django.contrib.sites',  #if you don't have
+    ...
+]
+```
 2. Add settings below to your settings.py
   
-
+```
     SITE_ID = 1
 
     AUTHENTICATION_BACKENDS = (
@@ -40,13 +40,13 @@ Quick start
 
     DEFAULT_FROM_EMAIL = '**EMAIL FROM**'
     EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-    EMAIL_HOST = **PUT YOUR SETTING**
-    EMAIL_HOST_USER = **PUT YOURS SETTING**
-    EMAIL_HOST_PASSWORD =**PUT YOURS SETTING**
-    EMAIL_PORT = **PUT YOURS SETTING**
+    EMAIL_HOST = #PUT YOUR SETTING
+    EMAIL_HOST_USER = #PUT YOURS SETTING
+    EMAIL_HOST_PASSWORD =#PUT YOURS SETTING
+    EMAIL_PORT = #PUT YOURS SETTING
     EMAIL_USE_TLS = True
 
-    
+``` 
 3. Include the upload URLconf in your project urls.py like this::
 
     url(r'^', include('upload_form.urls',namespace='upload_form')),
