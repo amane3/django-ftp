@@ -3,13 +3,13 @@
 
 Feature
 -----------
-transfer files between admin and clients<br>
-account management <br>
-mail notification<br>
+Transfer files between admin and clients<br>
+Account management <br>
+Mail notification<br>
 
 Requirements
 -----------
-python2.7/3.6
+Python2.7/3.6
 
 Quick start
 -----------
