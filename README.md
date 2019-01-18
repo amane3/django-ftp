@@ -1,6 +1,5 @@
 # Django-FTP
-https://img.shields.io/pypi/l/:packageName.svg
-
+<img alt="undefined" src="https://img.shields.io/pypi/l/django.svg">
 
 Feature
 -----------
