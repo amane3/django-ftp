@@ -9,7 +9,7 @@ mail notification<br>
 
 Requirements
 -----------
-python
+python2.7/3.6
 
 Quick start
 -----------
