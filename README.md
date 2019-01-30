@@ -62,7 +62,7 @@ INSTALLED_APPS = [
 7. Open "Sites" model and change "example.com" to your domain.
    (for development server , it should be "localhost" or "127.0.0.1")
 
-8. Visit http://127.0.0.1:8000/home/ to participate in the ftp.
+8. Visit http://127.0.0.1:8000/home/ to participate in the Django-ftp.
 
 ## Licence
 BSD 3-Clause
