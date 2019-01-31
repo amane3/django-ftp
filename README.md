@@ -49,12 +49,15 @@ INSTALLED_APPS = [
 
 ``` 
 3. Include the upload URLconf in your project urls.py like this::
+```
+from upload_form import views
 
-
-    url(r'^', include('upload_form.urls',namespace='upload_form')),<br>
-    url('^', include('django.contrib.auth.urls'))
-
-
+urlpatterns = [
+    url(r'^', include('upload_form.urls',namespace='upload_form')),
+    url('^', include('django.contrib.auth.urls')),
+    ...
+]
+```
 4. Run `python manage.py migrate` to create the upload_form models.
 
 5. Run `python manage.py createsuperuser` to create admin(email required).
