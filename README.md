@@ -9,7 +9,7 @@ Mail notification<br>
 
 Requirements
 -----------
-Python2.7/3.6
+Python2.7/3.6<br>
 Django1.8
 
 Quick start
