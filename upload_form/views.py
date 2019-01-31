@@ -179,7 +179,7 @@ def save2(request):
 @require_POST
 def downloadfile(request):
     requestfile = request.POST['filename']
-    flag = False;
+    flag = False
     val = requestfile.split("?")
     val = filter(lambda str:str !='',val)
     if request.user.is_superuser:
@@ -207,7 +207,7 @@ def downloadfile(request):
        downloadfile = path.uploadfile.url
        filelist.append(downloadfile)
        filename.append(value)
-       flag = True;
+       flag = True
       else:
         contexts = {
                'alert':'*The file does not exist.',
@@ -227,11 +227,11 @@ def downloadfile(request):
 
 @require_POST
 def deletefile(request):
-    deletefile = request.POST['deletefile']; 
+    deletefile = request.POST['deletefile']
     val3 = deletefile.split("?")
     val3 = filter(lambda str:str !='',val3)
     if request.user.is_superuser:
-      username = request.POST['username'];
+      username = request.POST['username']
       val4 = username.split("?")
       val4 = filter(lambda str:str !='',val4)
     for i, value in enumerate(val3):
