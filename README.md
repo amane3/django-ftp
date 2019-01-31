@@ -50,8 +50,10 @@ INSTALLED_APPS = [
 ``` 
 3. Include the upload URLconf in your project urls.py like this::
 
+
     url(r'^', include('upload_form.urls',namespace='upload_form')),
     url('^', include('django.contrib.auth.urls'))
+
 
 4. Run `python manage.py migrate` to create the upload_form models.
 
