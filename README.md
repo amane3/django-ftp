@@ -10,6 +10,7 @@ Mail notification<br>
 Requirements
 -----------
 Python2.7/3.6
+Django1.8
 
 Quick start
 -----------
