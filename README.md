@@ -51,7 +51,7 @@ INSTALLED_APPS = [
 3. Include the upload URLconf in your project urls.py like this::
 
 
-    url(r'^', include('upload_form.urls',namespace='upload_form')),
+    url(r'^', include('upload_form.urls',namespace='upload_form')),<br>
     url('^', include('django.contrib.auth.urls'))
 
 
