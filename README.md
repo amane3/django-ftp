@@ -1,5 +1,6 @@
 # Django-FTP
 <img alt="undefined" src="https://img.shields.io/pypi/l/django.svg">
+<img alt="undefined" src="https://img.shields.io/badge/django-1.8-blue.svg">
 
 Feature
 -----------
