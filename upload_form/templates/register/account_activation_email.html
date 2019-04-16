@@ -4,5 +4,5 @@ Hi{{ user.username}},
 Please Click on the link below to confirm you registration:
 
 
-http://192.168.2.54:3333{% url 'activate' uidb64=uid token=token %}
+{% domain %}/{% url 'activate' uidb64=uid token=token %}
 {% endautoescape %}

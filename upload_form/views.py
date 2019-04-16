@@ -10,7 +10,7 @@ from django.http import HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
 from django.core.cache import cache
 import json
-from django.http.response import JsonResponse 
+from django.http.response import JsonResponse
 from django.template.loader import render_to_string
 from django.core.mail import send_mail
 from django.contrib.auth.models import User
@@ -19,9 +19,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.utils.encoding import force_bytes
 from django.utils.http import urlsafe_base64_encode
 from django.template.loader import render_to_string
-from tokens import account_activation_token 
-from django.contrib.auth import login
-from django.contrib.auth.models import User
+from tokens import account_activation_token
 from django.utils.encoding import force_text
 from django.contrib.sites.shortcuts import get_current_site
 from django.utils.http import urlsafe_base64_decode
@@ -30,45 +28,44 @@ from forms import SignUpForm
 
 def signup(request):
     if request.method =="POST":
-       form = SignUpForm(request.POST)
-       if form.is_valid():
+      form = SignUpForm(request.POST)
+      if form.is_valid():
           user = form.save(commit=False)
           user.is_active = False
           user.save()
           current_site = get_current_site(request)
           subject = 'Activate Your Account'
           message = render_to_string("account_activation_email.html",{
-          'user':user,
-          'domain':current_site.domain,
-          'uid':urlsafe_base64_encode(force_bytes(user.id)),
-          'token':account_activation_token.make_token(user),
+            'user':user,
+            'domain':current_site.domain,
+            'uid':urlsafe_base64_encode(force_bytes(user.id)),
+            'token':account_activation_token.make_token(user),
           })
           user.email_user(subject,message)
           return redirect('/account_activation_sent')
     else:
        form = SignUpForm()
     return render(request,'signup.html',{'form':form})
- 
+
 def account_activation_sent(request):
     return render(request,'register/account_activation.html')
 
 
 def activate(request, uidb64, token):
-    
-    
+
     uid = force_text(urlsafe_base64_decode(uidb64))
     user = User.objects.get(pk=uid)
     username = user.username
     password = user.password
-  
+
     if user is not None and account_activation_token.check_token(user, token):
-        
+
         user.is_active = True
         user.profile.email_confirmed = True
         user.save()
         user.backend = 'django.contrib.auth.backends.ModelBackend'
         login(request, user)
-        
+
         return redirect('/home')
     else:
         contexts={
@@ -78,11 +75,8 @@ def activate(request, uidb64, token):
             'uid':uid,
             'password':password,
             'UserID':user,
-         
-}
+        }
         return render(request, 'account_activation_invalid.html',contexts)
-
-
 
 
 @login_required
@@ -103,51 +97,21 @@ def uploads(request):
     return render(request,'upload_form/upload.html',{'form':form})
 
 @login_required
-def uploads2(request):
-    form = uploadform()
-    return render(request,'upload_form/upload2.html',{'form':form})
-
-@login_required
 def downloads(request):
-         contexts ={
-            'all_data':upload.objects.all()
-         }
-    
-         return render(request, 'upload_form/downloads.html',contexts)
+    contexts ={
+      'all_data':upload.objects.all()
+    }
+    return render(request, 'upload_form/downloads.html',contexts)
 
-@require_POST
-def save(request):
-    name = request.POST['filename']
-    form = uploadform(data=request.POST, files=request.FILES)
-    u = upload(
-      filename = name,
-      uploadfile = request.FILES['uploadfile'],
-      description = request.POST['description'],
-      size = request.POST['size'],
-      user = request.user
-    )
-    if upload.objects.filter(user = request.user,filename = name).exists():
-       alert = '*This file already exists.' 
-       contexts = {
-          'all_data':upload.objects.all(),
-          'form':form,
-          'alert':alert,
-       }
-       return render(request, 'upload_form/upload.html',contexts)
-   
-    else:
-         u.save()
-         return HttpResponseRedirect('/home')
 @require_POST
 def checkfile(request):
     name = request.POST['filename']
-    if upload.objects.filter(user = request.user,filename = name).exists():   
-      message ={'message':'fail'}  
+    if upload.objects.filter(user = request.user,filename = name).exists():
+      message ={'message':'fail'}
       return JsonResponse(message)
     else:
       message ={'message':'success'}
       return JsonResponse(message)
- 
 
 def send_email(request,action):
          subject = 'Notification'
@@ -161,7 +125,7 @@ def send_email(request,action):
          return
 
 @require_POST
-def save2(request):
+def save(request):
          name = request.POST['filename']
          u = upload(
          filename = name,
@@ -170,7 +134,7 @@ def save2(request):
          size = request.POST['size'],
          user = request.user)
          u.save()
-         message2 = {'message':'success'} 
+         message2 = {'message':'success'}
          action = "upload"
          if not request.user.is_superuser:
              send_email(request,action)
@@ -189,7 +153,7 @@ def downloadfile(request):
     filelist = []
     filename = []
     for i, value in enumerate(val):
-     if request.user.is_superuser:     
+     if request.user.is_superuser:
       if upload.objects.filter(filename = value,user=val2[i]).exists():
         path = upload.objects.get(filename = value,user=val2[i])
         downloadfile = path.uploadfile.url
@@ -200,10 +164,10 @@ def downloadfile(request):
                'alert':'*The file does not exist.',
                'all_data':upload.objects.all()
 }
-        return render(request, 'upload_form/index.html',contexts) 
+        return render(request, 'upload_form/index.html',contexts)
      else:
       if upload.objects.filter(filename = value,user = request.user).exists:
-       path = upload.objects.get(filename = value,user=request.user)  
+       path = upload.objects.get(filename = value,user=request.user)
        downloadfile = path.uploadfile.url
        filelist.append(downloadfile)
        filename.append(value)
@@ -223,7 +187,6 @@ def downloadfile(request):
        send_email(request,action)
     return render(request,'upload_form/downloading.html',contexts)
     raise Http404
-    
 
 @require_POST
 def deletefile(request):
@@ -235,13 +198,8 @@ def deletefile(request):
       val4 = username.split("?")
       val4 = filter(lambda str:str !='',val4)
     for i, value in enumerate(val3):
-      if request.user.is_superuser:    
+      if request.user.is_superuser:
         upload.objects.filter(filename = value,user = val4[i]).delete()
       else:
         upload.objects.filter(filename = value,user = request.user).delete()
     return HttpResponseRedirect('/home')
-
-
-
-
-

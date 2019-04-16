@@ -1,85 +1,55 @@
-                                                                                                                                                                                                                                                                                               {% extends "upload_form/base.html" %}
-{% block content %}
+{% extends "upload_form/base.html" %} {% block content %}
 <div class="menu">
-<table class="table table-hover" id="download-table">
-<thead>
-<tr>
-<th><input name="select_all" value="1" type="checkbox"></th>
-<th>filename</th>
-<th>date</th>
-<th>description</th>
-</tr>
-</thead>
-<tbody>
-{% for value in all_data %}
-<tr class="listval">
-<td></td>
-<td>{{ value }}</td>
-<td>{{ value.timestamp }}</td>
-<td>...</td>
-</tr>
-{% endfor %}
-</tbody>
-</table>
-<form action="{% url 'upload_form:downloadfile' %}" method="POST">
-<div class="form-group" style="display:none;">
-<label style="float:left;" for="filename">Filename</label>
-<input id="filename" class="form-control" type="text" name="filename" aria-describedby="alert" placeholder="Filename" required>
-
+  <table class="table table-hover" id="download-table">
+    <thead>
+      <tr>
+        <th><input name="select_all" value="1" type="checkbox" /></th>
+        <th>filename</th>
+        <th>date</th>
+        <th>description</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for value in all_data %}
+      <tr class="listval">
+        <td></td>
+        <td>{{ value }}</td>
+        <td>{{ value.timestamp }}</td>
+        <td>...</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  <form action="{% url 'upload_form:downloadfile' %}" method="POST">
+    <div class="form-group" style="display:none;">
+      <label style="float:left;" for="filename">Filename</label>
+      <input
+        id="filename"
+        class="form-control"
+        type="text"
+        name="filename"
+        aria-describedby="alert"
+        placeholder="Filename"
+        required
+      />
+    </div>
+    <div class="col-xs-offset-2 col-xs-10 text-right">
+      <small id="alert">{{ alert }}</small>
+      <input
+        type="submit"
+        class="btn btn-primary submit"
+        disabled
+        value="download"
+      /><br />
+    </div>
+    {% csrf_token %}
+  </form>
+  <a href="/home"
+    ><i
+      style="position:relative; right:10px;"
+      class="fas fa-arrow-circle-left"
+    ></i
+    >back to home</a
+  >
 </div>
-<div class="col-xs-offset-2 col-xs-10 text-right">
-<small id="alert">{{alert}}</small>
-<input type="submit"  class="btn btn-primary submit" disabled value="download"><br>
-</div>
-{% csrf_token %}
-</form>
-<a href="/home"><i style="position:relative; right:10px;" class="fas fa-arrow-circle-left"></i>back to home</a>
-</div>
-<script>
-jQuery(function($){
-   $("#download-table").DataTable( {
-        columnDefs: [{
-           orderable:false,
-           className:'select-checkbox',
-           targets: 0,
-           'checkboxes': {
-               'selectRow': true
-            }
-        }],
-        select: {
-           style:'multi+shift',
-           selector:'.listval',
-        },
-        order:[[ 1,'asc' ]]
-   });
-});
-$(document).ready(function(){
-$(document).on('click','.listval',function(){ 
-   var list = [];
-   $('.selected').each(function(){
-     val = $(this).children('td').eq(1).text();
-     list.push(val);
-});
-   console.log(list);
-   valstr = '';
-   for(i=0,l=list.length;i<l;i++){
-      valstr += list[i];
-      valstr += '?';
-   }
-   console.log(valstr);
-   $('#filename').val(valstr);
-   
-   if($('.select-info').length){
-      $('.submit').prop("disabled",false);
-   }
-   else{
-      $('.submit').prop("disabled",true);
-   }
-});
-});
-
-</script>
-
-
-
 {% endblock %}

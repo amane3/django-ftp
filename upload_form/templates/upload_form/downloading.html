@@ -1,75 +1,33 @@
-{% extends "upload_form/base.html" %}
-{% block content %}
+{% extends "upload_form/base.html" %} {% block content %}
 <div id="menu shadow">
-<!--<meta http-equiv="refresh" content="4;URL=/home">-->
-<div>Downloading...</div>
-<div class="progress"> <div class="progress-bar progress-bar-striped bg-info progress-bar-animated" role="progressbar" style="width:0%;"></div>
-<input type="text" id = 'filepath' value = "{{ downloadfile }}" style="display:none;">
-<input type="text" id = 'filename' value = "{{ filename }}" style="display:none;">
-</div>
-<input type="number" id="number" style="display:none;" value='0'/>
-<div id="progress"></div> 
-<br>
+  <!--<meta http-equiv="refresh" content="4;URL=/home">-->
+  <div>Downloading...</div>
+  <div class="progress">
+    <div
+      class="progress-bar progress-bar-striped bg-info progress-bar-animated"
+      role="progressbar"
+      style="width:0%;"
+    ></div>
+    <input
+      type="text"
+      id="filepath"
+      value="{{ downloadfile }}"
+      style="display:none;"
+    />
+    <input
+      type="text"
+      id="filename"
+      value="{{ filename }}"
+      style="display:none;"
+    />
+  </div>
+  <input type="number" id="number" style="display:none;" value="0" />
+  <div id="progress"></div>
+  <br />
 
-<div id="box">
-<div id="progress-msg"></div>
-</div>
+  <div id="box">
+    <div id="progress-msg"></div>
+  </div>
 </div>
 <a id="save"></a>
-<script>
-$(document).ready(function(){
-var file = $("#filepath").val();
-var filename = $("#filename").val();
-file2 = file.replace(/"/g,'').replace(/\[/g,'').replace(/\]/g,'').replace(/'/g,'');
-filename2 = filename.replace(/"/g,'').replace(/\[/g,'').replace(/\]/g,'').replace(/'/g,'');
-console.log(file2);
-console.log(filename2);
-file2 = file2.split(',');
-filename2 = filename2.split(',');
-filenum = filename2.length;
-for(i=0,l=file2.length;i<l;i++){
- var xhr = [],i;
- (function(i){
- xhr[i] = new XMLHttpRequest();
- var object;
- xhr[i].addEventListener('readystatechange',function(e){
-if(this.readyState == 4){
- object = URL.createObjectURL(this.response);
- downloadlink = filename2[i].replace(/^\s+|\s+$/g,'').slice(1);
- console.log(object);
- console.log(downloadlink);
- document.querySelector('#save').setAttribute('href',object);
- document.querySelector('#save').setAttribute('download',downloadlink);
- document.querySelector('#save').click();
- $('#progress-msg').append(downloadlink+'...completed!<br>');
- num = document.getElementById("number");
- num.stepUp(1);
- numval = num.value;
- numval = parseInt(numval);
- console.log(numval);
- console.log(filenum);
- if(numval == filenum){
-  home();
-}
-}
-});
- xhr[i].responseType = 'blob';
- xhr[i].addEventListener('progress',function(e){
-     var percent = (e.loaded / e.total)*100;
-     $('.progress-bar').css('width',percent+"%");
-     $('#progress').html(parseInt(percent)+"%");
-});
-xhr[i].open('get',file2[i]);
-console.log(file2[i]);
-xhr[i].send();
- })(i);
-}
-  
-function home(){
-  window.location.href = '/home';
-}
-
-
-});
-</script>
 {% endblock %}

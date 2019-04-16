@@ -2,32 +2,37 @@
 {% block content %}
 
 <div class="menu">
-  <form enctype="multipart/form-data" method="post" action="/save/">
+<div class="uploadform">
+  <form id="form" enctype="multipart/form-data" action="/save" method="post">
   	{% csrf_token %}
-  	{{ form.filename }}  
+  	{{ form.filename }}
         <label for="{{ uploadfile.name }}">Uploadfile</label>
         {{ form.uploadfile }}
         <label for="{{ description.auto_id }}">Description</label>
         {{ form.description }}
         {{ form.size }}
-        <div>{{ alert }}</div>
-  	<input id="file" class='btn' type="submit" value="upload"/>
+        <div id="alert">{{ alert }}</div><br>
+  	<input id="file" class="btn btn-outline-primary" type="button" value="upload">
   </form>
-
-<a href="/home"><i style="position:relative; right:10px;" class="fas fa-arrow-circle-left"></i>back to home</a>
 </div>
-<script>
+<div class="progress"> <div class="progress-bar progress-bar-striped bg-info progress-bar-animated" role="progressbar" style="width:0%;"></div>
+</div>
+<div id="progress"></div>
+<div id="progress-msg"></div>
+</div>
 
-
-var object = document.getElementById("id_uploadfile")
-object.addEventListener("change",function(event){
-   filename= event.target.files[0].name;
-   console.log(filename);
-   filesize = event.target.files[0].size;
-   console.log(filesize);
-   $('#id_size').val(filesize);
-   $('#id_filename').val(filename);
-});
-
-</script>
+<!-- MODAL -->
+<div class="modal  fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="modal" aria-hidden="true" ">
+  <div class="modal-dialog" role="document">
+   <div class="modal-content">
+     <div class="modal-body">
+     <div id="complete">Upload completed.</div>
+     </div>
+     <div class="modal-footer" style="display:flex;">
+         <button type="button" id="uploadmore" class="btn btn-outline-primary" >Upload more</button>
+         <button type="button" id="home" class="btn btn-outline-info" value="delete">Home</button>
+     </div>
+ </div>
+</div>
+</div>
 {% endblock %}

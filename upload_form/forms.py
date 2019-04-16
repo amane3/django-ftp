@@ -1,4 +1,4 @@
-from django import forms 
+from django import forms
 from .models import upload
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import (
@@ -16,8 +16,8 @@ class uploadform(forms.ModelForm):
                         'style':'display:none;',
                   }),
                   'uploadfile':forms.FileInput(attrs={
-                        'class':'form-control',   
-                        'required':'required', 
+                        'class':'form-control',
+                        'required':'required',
                   }),
                   'description':forms.TextInput(attrs={
                         'class':'form-control',
@@ -33,8 +33,6 @@ class uploadform(forms.ModelForm):
                   }),
             }
 
-
-
 class LoginForm(AuthenticationForm):
       def  __init__(self,*args,**kwargs):
            super(LoginForm, self).__init__(*args,**kwargs)
@@ -42,14 +40,12 @@ class LoginForm(AuthenticationForm):
                field.widget.attrs['class'] = 'form-control'
                field.widget.attrs['placeholder'] = field.label
 
-
 class SetForm(SetPasswordForm):
       def  __init__(self,*args,**kwargs):
            super(SetForm, self).__init__(*args,**kwargs)
            for field in self.fields.values():
                field.widget.attrs['class'] = 'form-control'
                field.widget.attrs['placeholder'] = field.label
-
 
 class SignUpForm(UserCreationForm):
       email = forms.EmailField(max_length=254, help_text="Required. Inform a valid email address.",widget=forms.EmailInput(attrs={'class':'form-control',"placeholder":"Email"}))
@@ -62,17 +58,12 @@ class SignUpForm(UserCreationForm):
           fields = ('username','email','password1','password2')
           widgets = {
                    'username':forms.TextInput(attrs={
-                        'class':'form-control', 
+                        'class':'form-control',
                         'required':'required',
                         'placeholder':'Username',
-                        }),         
+                        }),
            }
-
-
-
 class uploadmodelform(forms.ModelForm):
-
     class Meta:
         model = upload
         exclude = []
-      

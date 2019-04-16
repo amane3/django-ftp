@@ -3,7 +3,7 @@ from . import views
 from django.views.generic import FormView
 from .forms import uploadform,uploadmodelform
 from forms import LoginForm
-from forms import SetForm 
+from forms import SetForm
 
 
 app_name="upload_form"
@@ -12,9 +12,7 @@ urlpatterns = [
      url(r'^$', views.index,name='index'),
      url(r'^home$', views.index, name='index'),
      url(r'^uploads/$',views.uploads, name='uploads'),
-     url(r'^uploads2/$',views.uploads2, name='uploads2'),
-     url(r'^save/$',views.save, name='save'),
-     url(r'^save2/$',views.save2,name='save2'),
+     url(r'^save/$',views.save,name='save'),
      url(r'^checkfile/$',views.checkfile,name='checkfile'),
      url(r'^downloadfile/$',views.downloadfile, name='downloadfile'),
      url(r'^deletefile/$',views.deletefile,name='deletefile'),
